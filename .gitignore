@@ -1,0 +1,11 @@
+tsconfig.json
+.eslintrc.json
+.eslintignore
+.buildignore
+build.mjs
+\types
+\node_modules
+package-lock.json
+\dist
+easyMode.png
+simpleworkoutqte.gif
