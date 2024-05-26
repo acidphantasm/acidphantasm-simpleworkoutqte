@@ -9,3 +9,5 @@ package-lock.json
 \dist
 easyMode.png
 simpleworkoutqte.gif
+referencefile
+.gitignore
