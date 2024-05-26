@@ -2,9 +2,8 @@
 
 ### All this does is make the QTE for working out in the hideout easier.
 
+##
 Set "easyMode" to true to make the QTE much slower, much larger, and static (it doesn't shrink) 
-
-Otherwise: 
 ##
 "qteSpeed" is the modifier for how quickly the indicator moves. (0.5 = half speed) 
 ##
