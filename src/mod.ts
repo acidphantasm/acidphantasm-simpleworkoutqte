@@ -1,9 +1,9 @@
 import { DependencyContainer } from "tsyringe";
 
-import { IPostDBLoadMod } from "@spt-aki/models/external/IPostDBLoadMod";
-import { DatabaseServer } from "@spt-aki/servers/DatabaseServer";
-import { IDatabaseTables } from "@spt-aki/models/spt/server/IDatabaseTables";
-import { ILogger } from "@spt-aki/models/spt/utils/ILogger";
+import { IPostDBLoadMod } from "@spt/models/external/IPostDBLoadMod";
+import { DatabaseService } from "@spt/servers/DatabaseService";
+import { IDatabaseTables } from "@spt/models/spt/server/IDatabaseTables";
+import { ILogger } from "@spt/models/spt/utils/ILogger";
 import * as fs from "node:fs";
 import * as path from "node:path";
 
@@ -30,8 +30,8 @@ class SimpleWorkoutQTE implements IPostDBLoadMod
     {
         // Stuff we're going to use
         SimpleWorkoutQTE.config = JSON.parse(fs.readFileSync(SimpleWorkoutQTE.configPath, "utf-8"));
-        const databaseServer = container.resolve<DatabaseServer>("DatabaseServer");
-        const tables: IDatabaseTables = databaseServer.getTables();
+        const databaseService: DatabaseService = container.resolve<DatabaseService>("DatabaseService");
+        const tables: IDatabaseTables = databaseService.getTables();
         const hideoutSettings = tables.hideout;
         this.logger = container.resolve<ILogger>("WinstonLogger");
 
