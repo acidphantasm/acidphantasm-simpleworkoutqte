@@ -1,7 +1,7 @@
 import { DependencyContainer } from "tsyringe";
 
 import { IPostDBLoadMod } from "@spt/models/external/IPostDBLoadMod";
-import { DatabaseService } from "@spt/servers/DatabaseService";
+import { DatabaseService } from "@spt/services/DatabaseService";
 import { IDatabaseTables } from "@spt/models/spt/server/IDatabaseTables";
 import { ILogger } from "@spt/models/spt/utils/ILogger";
 import * as fs from "node:fs";
@@ -19,25 +19,18 @@ class SimpleWorkoutQTE implements IPostDBLoadMod
         this.mod = "acidphantasm-SimpleWorkoutQTE"; // Set name of mod so we can log it to console later
     }
 
-    // PreAKILoad
-    public preAkiLoad(container: DependencyContainer): void
-    {
-        // Get a logger - I am probably dumb but removing this breaks things - so don't delete it
-        this.logger = container.resolve<ILogger>("WinstonLogger");
-    }
-
     public postDBLoad(container: DependencyContainer): void 
     {
         // Stuff we're going to use
         SimpleWorkoutQTE.config = JSON.parse(fs.readFileSync(SimpleWorkoutQTE.configPath, "utf-8"));
         const databaseService: DatabaseService = container.resolve<DatabaseService>("DatabaseService");
         const tables: IDatabaseTables = databaseService.getTables();
-        const hideoutSettings = tables.hideout;
+        const hideoutTable = tables.hideout;
         this.logger = container.resolve<ILogger>("WinstonLogger");
 
         if (SimpleWorkoutQTE.config.easyMode)
         {
-            const quickTimeEvents = hideoutSettings.qte[0].quickTimeEvents;
+            const quickTimeEvents = hideoutTable.qte[0].quickTimeEvents;
             for (const quickTimeEvent of quickTimeEvents)
             {
                 quickTimeEvent.speed = 0.5;
@@ -47,7 +40,7 @@ class SimpleWorkoutQTE implements IPostDBLoadMod
         }
         else 
         {
-            const quickTimeEvents = hideoutSettings.qte[0].quickTimeEvents;
+            const quickTimeEvents = hideoutTable.qte[0].quickTimeEvents;
             for (const quickTimeEvent of quickTimeEvents)
             {
                 quickTimeEvent.speed = quickTimeEvent.speed * SimpleWorkoutQTE.config.qteSpeed;
@@ -60,7 +53,7 @@ class SimpleWorkoutQTE implements IPostDBLoadMod
                 {                   
                     quickTimeEvent.successRange.y = 1;
                 }
-                if (SimpleWorkoutQTE.config.debugLogging){this.logger.log(`QTE Speed: ${quickTimeEvent.speed.toFixed(2)} || SizeX: ${quickTimeEvent.successRange.x.toFixed(2)} || SizeY: ${quickTimeEvent.successRange.y.toFixed(2)}`,"cyan");}
+                if (SimpleWorkoutQTE.config.debugLogging){this.logger.log(`[${this.mod}] QTE Speed: ${quickTimeEvent.speed.toFixed(2)} || SizeX: ${quickTimeEvent.successRange.x.toFixed(2)} || SizeY: ${quickTimeEvent.successRange.y.toFixed(2)}`,"cyan");}
             }
         }
     }
