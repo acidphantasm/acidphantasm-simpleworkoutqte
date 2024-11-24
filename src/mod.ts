@@ -56,6 +56,37 @@ class SimpleWorkoutQTE implements IPostDBLoadMod
                 if (SimpleWorkoutQTE.config.debugLogging){this.logger.log(`[${this.mod}] QTE Speed: ${quickTimeEvent.speed.toFixed(2)} || SizeX: ${quickTimeEvent.successRange.x.toFixed(2)} || SizeY: ${quickTimeEvent.successRange.y.toFixed(2)}`,"cyan");}
             }
         }
+
+        results.singleSuccessEffect.rewardsRange[0].levelMultipliers = [
+            {
+                "level": 0,
+                "multiplier": 6
+            },
+            {
+                "level": 10,
+                "multiplier": 8
+            },
+            {
+                "level": 25,
+                "multiplier": 10
+            }
+        ]
+        results.singleSuccessEffect.rewardsRange[1].levelMultipliers = [  
+            {
+                "level": 0,
+                "multiplier": 6
+            },
+            {
+                "level": 10,
+                "multiplier": 8
+            },
+            {
+                "level": 25,
+                "multiplier": 10
+            }
+        ]
+
+        results.finishEffect.rewardsRange[0].time = SimpleWorkoutQTE.config.musclePainTime
     }
 }
 
