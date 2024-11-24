@@ -24,13 +24,15 @@ class SimpleWorkoutQTE implements IPostDBLoadMod
         // Stuff we're going to use
         SimpleWorkoutQTE.config = JSON.parse(fs.readFileSync(SimpleWorkoutQTE.configPath, "utf-8"));
         const databaseService: DatabaseService = container.resolve<DatabaseService>("DatabaseService");
+        this.logger = container.resolve<ILogger>("WinstonLogger");
+
         const tables: IDatabaseTables = databaseService.getTables();
         const hideoutTable = tables.hideout;
-        this.logger = container.resolve<ILogger>("WinstonLogger");
+        const quickTimeEvents = hideoutTable.qte[0].quickTimeEvents;
+        const results = hideoutTable.qte[0].results;
 
         if (SimpleWorkoutQTE.config.easyMode)
         {
-            const quickTimeEvents = hideoutTable.qte[0].quickTimeEvents;
             for (const quickTimeEvent of quickTimeEvents)
             {
                 quickTimeEvent.speed = 0.5;
@@ -92,6 +94,7 @@ class SimpleWorkoutQTE implements IPostDBLoadMod
 
 interface Config 
 {
+    musclePainTime: number,
     easyMode: boolean,
     qteSpeed: number,
     qteSize: number,
