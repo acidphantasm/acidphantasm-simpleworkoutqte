@@ -1,10 +1,10 @@
 {
     "name": "SimpleWorkoutQTE",
-    "version": "1.1.0",
+    "version": "1.2.0",
     "main": "src/mod.js",
     "license": "MIT",
     "author": "acidphantasm",
-    "sptVersion": "~3.9",
+    "sptVersion": "~3.10",
 	"loadBefore": [],
 	"loadAfter": [],
 	"incompatibilities": [],

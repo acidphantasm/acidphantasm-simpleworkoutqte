@@ -24,13 +24,15 @@ class SimpleWorkoutQTE implements IPostDBLoadMod
         // Stuff we're going to use
         SimpleWorkoutQTE.config = JSON.parse(fs.readFileSync(SimpleWorkoutQTE.configPath, "utf-8"));
         const databaseService: DatabaseService = container.resolve<DatabaseService>("DatabaseService");
+        this.logger = container.resolve<ILogger>("WinstonLogger");
+
         const tables: IDatabaseTables = databaseService.getTables();
         const hideoutTable = tables.hideout;
-        this.logger = container.resolve<ILogger>("WinstonLogger");
+        const quickTimeEvents = hideoutTable.qte[0].quickTimeEvents;
+        const results = hideoutTable.qte[0].results;
 
         if (SimpleWorkoutQTE.config.easyMode)
         {
-            const quickTimeEvents = hideoutTable.qte[0].quickTimeEvents;
             for (const quickTimeEvent of quickTimeEvents)
             {
                 quickTimeEvent.speed = 0.5;
@@ -56,11 +58,43 @@ class SimpleWorkoutQTE implements IPostDBLoadMod
                 if (SimpleWorkoutQTE.config.debugLogging){this.logger.log(`[${this.mod}] QTE Speed: ${quickTimeEvent.speed.toFixed(2)} || SizeX: ${quickTimeEvent.successRange.x.toFixed(2)} || SizeY: ${quickTimeEvent.successRange.y.toFixed(2)}`,"cyan");}
             }
         }
+
+        results.singleSuccessEffect.rewardsRange[0].levelMultipliers = [
+            {
+                "level": 0,
+                "multiplier": 6
+            },
+            {
+                "level": 10,
+                "multiplier": 8
+            },
+            {
+                "level": 25,
+                "multiplier": 10
+            }
+        ]
+        results.singleSuccessEffect.rewardsRange[1].levelMultipliers = [  
+            {
+                "level": 0,
+                "multiplier": 6
+            },
+            {
+                "level": 10,
+                "multiplier": 8
+            },
+            {
+                "level": 25,
+                "multiplier": 10
+            }
+        ]
+
+        results.finishEffect.rewardsRange[0].time = SimpleWorkoutQTE.config.musclePainTime
     }
 }
 
 interface Config 
 {
+    musclePainTime: number,
     easyMode: boolean,
     qteSpeed: number,
     qteSize: number,
