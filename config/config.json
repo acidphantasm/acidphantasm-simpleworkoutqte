@@ -1,6 +1,10 @@
 {
     "musclePainTime": 43200,
 
+    "level0ExpMultiplier": 2,
+    "level10ExpMultiplier": 3,
+    "level25ExpMultiplier": 4.5,
+
     "easyMode": false,
 
     "qteSpeed": 0.5,

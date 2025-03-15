@@ -55,38 +55,19 @@ class SimpleWorkoutQTE implements IPostDBLoadMod
                 {                   
                     quickTimeEvent.successRange.y = 1;
                 }
-                if (SimpleWorkoutQTE.config.debugLogging){this.logger.log(`[${this.mod}] QTE Speed: ${quickTimeEvent.speed.toFixed(2)} || SizeX: ${quickTimeEvent.successRange.x.toFixed(2)} || SizeY: ${quickTimeEvent.successRange.y.toFixed(2)}`,"cyan");}
+                if (SimpleWorkoutQTE.config.debugLogging) this.logger.log(`[${this.mod}] QTE Speed: ${quickTimeEvent.speed.toFixed(2)} || SizeX: ${quickTimeEvent.successRange.x.toFixed(2)} || SizeY: ${quickTimeEvent.successRange.y.toFixed(2)}`,"cyan");
             }
         }
 
-        results.singleSuccessEffect.rewardsRange[0].levelMultipliers = [
-            {
-                "level": 0,
-                "multiplier": 6
-            },
-            {
-                "level": 10,
-                "multiplier": 8
-            },
-            {
-                "level": 25,
-                "multiplier": 10
-            }
-        ]
-        results.singleSuccessEffect.rewardsRange[1].levelMultipliers = [  
-            {
-                "level": 0,
-                "multiplier": 6
-            },
-            {
-                "level": 10,
-                "multiplier": 8
-            },
-            {
-                "level": 25,
-                "multiplier": 10
-            }
-        ]
+        const originalEndurance = results.singleSuccessEffect.rewardsRange[0].levelMultipliers;
+        const originalStrength = results.singleSuccessEffect.rewardsRange[1].levelMultipliers;
+
+        originalEndurance[0].multiplier *= SimpleWorkoutQTE.config.level0ExpMultiplier;
+        originalEndurance[1].multiplier *= SimpleWorkoutQTE.config.level0ExpMultiplier;
+        originalEndurance[2].multiplier *= SimpleWorkoutQTE.config.level25ExpMultiplier;
+        originalStrength[0].multiplier *= SimpleWorkoutQTE.config.level0ExpMultiplier;
+        originalStrength[1].multiplier *= SimpleWorkoutQTE.config.level0ExpMultiplier;
+        originalStrength[2].multiplier *= SimpleWorkoutQTE.config.level25ExpMultiplier;
 
         results.finishEffect.rewardsRange[0].time = SimpleWorkoutQTE.config.musclePainTime
     }
@@ -95,6 +76,9 @@ class SimpleWorkoutQTE implements IPostDBLoadMod
 interface Config 
 {
     musclePainTime: number,
+    level0ExpMultiplier: number,
+    level10ExpMultiplier: number,
+    level25ExpMultiplier: number,
     easyMode: boolean,
     qteSpeed: number,
     qteSize: number,
